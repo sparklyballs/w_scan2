@@ -1,3 +1,4 @@
+ARG UBUNTU_VER="bionic"
 ARG ALPINE_VER="3.12"
 FROM alpine:${ALPINE_VER} as fetch-stage
 
@@ -34,20 +35,27 @@ RUN \
 	/tmp/wcan_2.tar.gz -C \
 	/source/w_scan2 --strip-components=1
 
-FROM alpine:${ALPINE_VER} as packages-stage
+FROM ubuntu:${UBUNTU_VER} as packages-stage
 
 ############## packages stage ##############
 
 # install build packages
 RUN \
-	apk add --no-cache \
+	apt-get update && \
+	apt-get install -y \
 		autoconf \
 		automake \
 		g++ \
 		gcc \
 		libtool \
-		linux-headers \
-		make
+		make \
+	\
+# cleanup
+	\
+	&& rm -rf \
+		/tmp/* \
+		/var/lib/apt/lists/* \
+		/var/tmp/
 
 FROM packages-stage as build-stage
 
@@ -68,7 +76,7 @@ RUN \
 	&& make \
 	&& make DESTDIR=/output/w_scan2 install
 
-FROM sparklyballs/alpine-test:${ALPINE_VER}
+FROM sparklyballs/ubuntu-test:${UBUNTU_VER}
 
 ############## runtine stage ##############
 
