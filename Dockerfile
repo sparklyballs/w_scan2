@@ -43,6 +43,7 @@ FROM ubuntu:${UBUNTU_VER} as packages-stage
 RUN \
 	apt-get update && \
 	apt-get install -y \
+	--no-install-recommends \
 		autoconf \
 		automake \
 		g++ \
