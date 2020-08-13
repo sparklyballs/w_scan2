@@ -34,7 +34,7 @@ RUN \
 	/tmp/wcan_2.tar.gz -C \
 	/source/w_scan2 --strip-components=1
 
-FROM alpine:${ALPINE_VER} as packages1-stage
+FROM alpine:${ALPINE_VER} as packages-stage
 
 ############## packages stage ##############
 
@@ -49,7 +49,7 @@ RUN \
 		linux-headers \
 		make
 
-FROM packages1-stage as build-stage
+FROM packages-stage as build-stage
 
 ############## build stage ##############
 
