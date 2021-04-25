@@ -76,8 +76,6 @@ RUN \
 		--prefix=/usr \
 	&& make \
 	&& make DESTDIR=/output/w_scan2 install
-RUN \
-	echo "blah"
 
 FROM sparklyballs/ubuntu-test:${UBUNTU_VER}
 
